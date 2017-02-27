@@ -1,0 +1,23 @@
+table {
+  border-collapse: collapse;    
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+.threshold:before {
+    content: "\00b0"
+}
+
+input[type="button"] {
+    background-color: orange;
+    border-color: orange;
+    border-radius: 5px;
+    padding: 5px;
+}

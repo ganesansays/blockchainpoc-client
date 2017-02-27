@@ -1,0 +1,48 @@
+<h1>
+  {{title}}
+</h1>
+
+<h2>Package</h2>
+<div>Name: {{this.package.Name}}</div>
+<div>Temperature: <span style="font-size: 20px; color: red">{{this.package.Temperature}} <span class="threshold">
+    C
+</span> </span></div>
+
+<div>Contract Terms: <= 0 <span class="threshold">C</span></div>
+<div *ngIf="this.package.Consumed">
+  <span>Consumed</span>
+  <input value="Reset" (click)="init()" type="button">
+</div>
+<div *ngIf="this.package.Contract.Breached">
+  <span>Breached</span>
+  <input value="Reset" (click)="init()" type="button">
+</div>
+
+<p>
+
+<h2>Contracted Parties</h2>
+<table>
+  <tr>
+    <th>Party</th>
+    <th>Current Owner</th>
+    <th>Transport Action</th>
+    <th>Handover Action</th>
+    <th>Contract Status</th>
+  </tr>
+  <tr *ngFor="let party of this.package.Contract.Parties">
+    <td>{{party.Name}}</td>
+    <td><span *ngIf="party.Responsible">*</span></td>
+    <td><input *ngIf="party.Responsible && !party.Transporting && !party.Transported" type="button" (click)="party.startTransport()" value="Transport"></td>
+    <td *ngIf="!party.Consumer">
+      <input *ngIf="party.Responsible && party.Transported && party.ContractHonored()" type="button" (click)="this.package.Contract.handOver()" value="Handover">
+      <input *ngIf="party.Responsible && party.Transported && party.ContractHonored()" type="button" (click)="this.package.Contract.breachContract()" value="Breach">
+    </td>
+    <td *ngIf="party.Consumer">
+      <input *ngIf="party.Responsible && party.Transported && party.ContractHonored()" type="button" (click)="this.package.consume()" value="Consume">
+    </td>
+    <td>
+      <span *ngIf="party.Transported && party.ContractHonored()">Honored</span>
+      <span *ngIf="party.Transported && !party.ContractHonored()">Breached</span>
+    </td>
+  </tr>
+</table>
